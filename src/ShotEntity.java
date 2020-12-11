@@ -48,7 +48,7 @@ public class ShotEntity extends Entity {
      } // if
      
      // if it has hit an alien, kill it!
-     if (other instanceof AlienEntity) {
+     if (other instanceof AlienEntity || other instanceof Asteroid || other instanceof LevelTwoAlien) {
     	 int x = other.getX();
     	 int y = other.getY();
     	/* other.createSprite("sprites/death.png");
