@@ -1,19 +1,65 @@
-
 public class ItemEntity extends Entity{
 	
-	private Game game; // the game in which the ship exists
+	private double moveSpeed = 75; // horizontal speed
+	  private long lastAlienFire = 0;
+		int firingIntervalAlien = (int)(Math.random( ) * 500 + 400);
+	  private Game game; // the game in which the alien exists
 
-	public ItemEntity(Game g, String r, int newX, int newY) {
-		super(r, newX, newY);
-		game = g;
-		// TODO Auto-generated constructor stub
-	}
+	  /* construct a new alien
+	   * input: game - the game in which the alien is being created
+	   *        r - the image representing the alien
+	   *        x, y - initial location of alien
+	   */
+	  public ItemEntity(Game g, String r, int newX, int newY) {
+	    super(r, newX, newY);  // calls the constructor in Entity
+	    game = g;
+	    dx = -moveSpeed;  // start off moving left
+	  } // constructor
 
+	  /* move
+	   * input: delta - time elapsed since last move (ms)
+	   * purpose: move alien
+	   */
+	  public void move (long delta){
+	    // if we reach left side of screen and are moving left
+	    // request logic update
+	    if ((dx < 0) && (x < 10)) {
+	      game.updateLogic();   // logic deals with moving entities
+	                            // in other direction and down screen
+	    } // if
+
+	    // if we reach right side of screen and are moving right
+	    // request logic update
+	    if ((dx > 0) && (x > 950)) {
+	      game.updateLogic();
+	    } // if
+	    
+	    // proceed with normal move
+	    super.move(delta);
+	  } // move
+
+
+	  /* doLogic
+	   * Updates the game logic related to the aliens,
+	   * ie. move it down the screen and change direction
+	   */
+	  public void doLogic() {
+	    // swap horizontal direction and move down screen 10 pixels
+	    if(dx < 0){
+	    //  game.removeEntities.add(entity)
+	    }
+	  } // doLogic
 	
-	public void collidedWith(Entity other) {
-		if(other instanceof ShipEntity) {
-			game.notifyPowerUp();
-		}
-	}
+	  /* collidedWith
+	   * input: other - the entity with which the alien has collided
+	   * purpose: notification that the alien has collided
+	   *          with something
+	   */
+	   public void collidedWith(Entity other) {
+	     // collisions with aliens are handled in ShotEntity and ShipEntity
+	   } // collidedWith
+	  
 
-}
+
+
+}//ItemEntity
