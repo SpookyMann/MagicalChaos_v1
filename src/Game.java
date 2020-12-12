@@ -22,6 +22,8 @@ public class Game extends Canvas {
         private boolean firePressed = false; // true if firing
         private boolean upPressed = false;  // true if left arrow key currently pressed
         private boolean downPressed = false; 
+	private Entity boss;
+        private int chooseFire;
 
 	private int width = 1000;
         private int height = 1000;
@@ -205,6 +207,20 @@ public class Game extends Canvas {
         	  entities.remove(alien);
          }
    
+	
+	    public void chooseFire() {
+        	int choose = (int)(Math.random( ) * 2 + 1);
+        	
+        	if(choose == 1) {
+        		Entity redBall = new AlienShotDefault(this, "sprites/redBall.png", boss.getX(), boss.getY());
+    			entities.add(redBall);
+
+        	}else if(choose == 2) {
+        		Entity laser = new AlienShotDefault(this, "sprites/laser.png", 0, boss.getY());
+    			entities.add(laser);
+    			
+        	}
+         }
         /* Attempt to fire.*/
         public void tryToFire() {
           // check that we've waited long enough to fire
@@ -360,6 +376,15 @@ public class Game extends Canvas {
                }
                entity.draw(g);
             } // for
+		 if(isBoss) {
+            	boss = new BossEntity(this, "sprites/boss.png", 1000, 0);
+	          	entities.add(boss);
+	          	isBoss = false;
+            }
+            
+            if(boss != null && boss.getX() <= 184) {
+          		stopGame = true;
+          	}
 
             // brute force collisions, compare every entity
             // against every other entity.  If any collisions
@@ -441,6 +466,29 @@ public class Game extends Canvas {
             	entities.remove(backgroundRepeat);
             	backgroundRepeat = null;
             }
+		  
+	if(stopGame) {
+		for(int i = 0; i < entities.size(); i++) {
+			Entity entity = (Entity) entities.get(i);
+			if(entity instanceof AlienEntity || entity instanceof Asteroid
+			|| entity instanceof ShotAlien || entity instanceof AlienShotDefault || entity instanceof DeathEntity) {
+				entities.remove(entity);
+				removeEntities.add(entity);
+		   }//ifElse
+		}//for
+
+		background.setX(0);
+		backgroundRepeat.setX(0);
+		background.setHorizontalMovement(0);
+		backgroundRepeat.setHorizontalMovement(0);
+		boss.setHorizontalMovement(0);
+		boss.tryToFire();
+		if(boss.tryToFire() == true) {
+
+	chooseFire();
+		}
+
+	}
            
             // pause
             try { Thread.sleep(100); } catch (Exception e) {}
