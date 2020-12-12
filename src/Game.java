@@ -22,6 +22,8 @@ public class Game extends Canvas {
         private boolean firePressed = false; // true if firing
         private boolean upPressed = false;  // true if left arrow key currently pressed
         private boolean downPressed = false; 
+	private boolean isBoss = false;
+        private boolean stopGame = false;
 	private Entity boss;
         private int chooseFire;
 
