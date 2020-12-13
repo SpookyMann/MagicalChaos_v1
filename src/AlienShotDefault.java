@@ -1,6 +1,6 @@
 /* ShotEntity.java
- * March 27, 2006
- * Represents player's ship
+ *December 12 2020
+ * Represents the default alien shot
  */
 
 //shooting class
