@@ -9,8 +9,8 @@ public class BackgroundEntity extends Entity {
   private double moveSpeed = 75; // horizontal speed
 
   private Game game; // the game in which the alien exists
-  private int width = 1000;
-  private int height = 1000;
+  private int width = 1280;
+  private int height = 1024;
 
   /* construct a new alien
    * input: game - the game in which the alien is being created
