@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Game extends Canvas {
 
@@ -49,6 +51,7 @@ public class Game extends Canvas {
         private long lastAlienFireTwo = 0;
         private long lastAlienFire = 0;
         private long alienSpawnInterval = 2000;
+	private long lastFirePower = 0;
         private long firingInterval = 300; // interval between shots (ms)
         private long firingIntervalAlien = 700; // interval between shots (ms)
         private long firingIntervalAlienTwo = 300;
@@ -60,7 +63,7 @@ public class Game extends Canvas {
                                      // for a key press
         private long lastDeath = 0;
         private boolean logicRequiredThisLoop = false; // true if logic
-                                                       // needs to be 
+        private boolean secondShot = false;                                               // needs to be 
                                                        // applied this loop
 
     	/*
@@ -185,35 +188,56 @@ public class Game extends Canvas {
            
            dropChance = (int) (Math.random()*2) + 1;
            
-           if(dropChance == 1) {
+           if(dropChance == 10 && currentPowerUp == 0) {
         	   Entity heart = new ItemEntity(this, "sprites/lifeHeart.png", x, y);
+        	   currentPowerUp = 1;
                entities.add(heart);
                
             // powerUp(alien);
         	   
-           } else if (dropChance == 20){
+           } else if (dropChance == 20 && currentPowerUp == 0){
+        	   Entity shield = new ItemEntity(this, "sprites/35.png", x, y);
+        	   entities.add(shield);
+        	   currentPowerUp = 2;
+           } else if (dropChance == 1 && currentPowerUp == 0) {
+        	  
+        	   currentPowerUp = 3;
+        	   Entity twoShot = new ItemEntity(this, "sprites/manyStick.png", x, y);
+        	   entities.add(twoShot);
+        	   secondShot = true;
         	   
-           } else if (dropChance == 15) {
         	   
            }
     
-           
-			/* if ((System.currentTimeMillis() - lastDeath) < deathInterval){
+           Entity alien = new DeathEntity(this, "sprites/death.png", x, y);
+                  entities.add(alien);
+                  if ((System.currentTimeMillis() - lastDeath) < deathInterval){
                        return;
                      } else {
                        lastDeath = System.currentTimeMillis();
                        entities.remove(alien);
-                     }*/
-			if(alienScore == 4) {
-				isBoss = true;
-			}
-
+                     }
+             
            
          } // notifyAlienKilled
-        
+       
          public void powerUp(Entity alien) {
         	  entities.remove(alien);
-         }
+        	  if(currentPowerUp == 1) {
+        		  lives++;
+        		  currentPowerUp = 0;
+        	  }else if(currentPowerUp == 2) {
+        		 int two = lives;
+        		 lives = 999;
+        		  System.out.println("lives1 " + lives);
+        		 currentPowerUp = 0;
+        		  givenUsingTimer_whenSchedulingTaskOnce_thenCorrect(two);
+        	  }else if(currentPowerUp == 3) {
+        		  secondShot = true;
+        		  currentPowerUp = 0;
+        	  }
+        
+     	}//powerUp
    
 	
 	    public void chooseFire() {
@@ -229,6 +253,22 @@ public class Game extends Canvas {
     			
         	}
          }
+	
+	  public void givenUsingTimer_whenSchedulingTaskOnce_thenCorrect(int two) {
+        	    TimerTask task = new TimerTask() {
+        	    	
+        	        public void run() {
+        	           lives = two;
+        	           System.out.println("lives " + lives);
+        	          
+        	        }
+        	    };
+        	    Timer timer = new Timer("Timer");
+        	    
+        	    long delay = 6000L;
+        	    timer.schedule(task, delay);
+        	}	
+
         /* Attempt to fire.*/
         public void tryToFire() {
           // check that we've waited long enough to fire
@@ -242,6 +282,21 @@ public class Game extends Canvas {
                             ship.getX(), ship.getY());
           entities.add(shot);
         } // tryToFire
+	
+	 public void tryToFire2() {
+        
+            // check that we've waited long enough to fire
+            if ((System.currentTimeMillis() - lastFirePower) < firingInterval){
+              return;
+            } // if
+        	System.out.println("test");
+            // otherwise add a shot
+            lastFirePower = System.currentTimeMillis();
+            ShotEntity shot = new ShotEntity(this, "sprites/redShot.png", 
+                              ship.getX()+45, ship.getY()+45);
+            entities.add(shot);
+          } // tryToFire
+        
  	
 	   public void alienSpawn() {
         	if ((System.currentTimeMillis() - lastAlien) < alienSpawnInterval){
@@ -475,6 +530,11 @@ public class Game extends Canvas {
             // if spacebar pressed, try to fire
             if (firePressed) {
               tryToFire();
+		      if(secondShot == true) {
+            
+            	 
+            	  tryToFire2();
+              }
             } // if
 		 if(!stopGame) {
 			  if((background.getX() + background.getWidth()) < width) {
