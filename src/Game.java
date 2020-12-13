@@ -32,8 +32,8 @@ public class Game extends Canvas {
         private int chooseFire;
         private DeathEntity explosion;
 
-        private int width = 1000;
-        private int height = 1000;
+        private int width = 1280;
+        private int height = 1024;
         private boolean gameRunning = true;
         private ArrayList entities = new ArrayList(); // list of entities
                                                       // in game
@@ -77,11 +77,11 @@ public class Game extends Canvas {
     		JPanel panel = (JPanel) container.getContentPane();
     
     		// set up the resolution of the game
-    		panel.setPreferredSize(new Dimension(1000,1000));
+    		panel.setPreferredSize(new Dimension(1280,1024));
     		panel.setLayout(null);
     
     		// set up canvas size (this) and add to frame
-    		setBounds(0,0,1000,1000);
+    		setBounds(0,0,1280,1024);
     		panel.add(this);
     
     		// Tell AWT not to bother repainting canvas since that will
@@ -126,7 +126,7 @@ public class Game extends Canvas {
          *          Each entity will be added to the array of entities in the game.
     	 */
     	private void initEntities() {
-		background = new BackgroundEntity(this, "sprites/city.png",0,0);
+		background = new BackgroundEntity(this, "sprites/midnightForest.png",0,0);
     		entities.add(background);
               // create the ship and put in center of screen
               ship = new ShipEntity(this, 0, 500);
@@ -539,7 +539,7 @@ public class Game extends Canvas {
 		 if(!stopGame) {
 			  if((background.getX() + background.getWidth()) < width) {
 	            	
-	            	backgroundRepeat = new BackgroundEntity(this, "sprites/city.png",background.getX() + background.getWidth(), 0);
+	            	backgroundRepeat = new BackgroundEntity(this, "sprites/midnightForest.png",background.getX() + background.getWidth(), 0);
 	            	entities.add(1,backgroundRepeat);
 	            }
 	            
