@@ -186,7 +186,7 @@ public class Game extends Canvas {
            alienCount--;
            alienScore++;
            
-           dropChance = (int) (Math.random()*2) + 1;
+           dropChance = (int) (Math.random()*20) + 1;
            
            if(dropChance == 10 && currentPowerUp == 0) {
         	   Entity heart = new ItemEntity(this, "sprites/lifeHeart.png", x, y);
@@ -199,7 +199,7 @@ public class Game extends Canvas {
         	   Entity shield = new ItemEntity(this, "sprites/35.png", x, y);
         	   entities.add(shield);
         	   currentPowerUp = 2;
-           } else if (dropChance == 1 && currentPowerUp == 0) {
+           } else if (dropChance == 15 && currentPowerUp == 0) {
         	  
         	   currentPowerUp = 3;
         	   Entity twoShot = new ItemEntity(this, "sprites/manyStick.png", x, y);
