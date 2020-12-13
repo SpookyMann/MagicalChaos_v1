@@ -201,7 +201,10 @@ public class Game extends Canvas {
                        lastDeath = System.currentTimeMillis();
                        entities.remove(alien);
                      }
-             
+			if(alienScore == 4) {
+				isBoss = true;
+			}
+
            
          } // notifyAlienKilled
         
@@ -248,13 +251,13 @@ public class Game extends Canvas {
            
           	if(en == 1) {
           		//easiest level alien
-          		System.out.println("1");
+          		//System.out.println("1");
                 Entity alien = new AlienEntity(this, "sprites/tounge.png", 1000, y);
                 entities.add(alien);
                 alienCount++;
           	}else if(en == 2 && alienScore > 1){
           		//second easiest level alien
-          	  System.out.println("2");
+          	  //System.out.println("2");
           	  Entity alien = new AlienEntity(this, "sprites/greenFace.png", 1000, y); 
                      
                     entities.add(alien);
@@ -285,7 +288,7 @@ public class Game extends Canvas {
                     alienCount++;
             	}
             }else if(en == 5 && alienScore > 10) {
-          	  System.out.println("5");
+          	  //System.out.println("5");
           	  Entity alien = new AlienEntity(this, "sprites/creep.png", 1000, y);
                     
                     entities.add(alien);
@@ -340,6 +343,9 @@ public class Game extends Canvas {
             if (!waitingForKeyPress) {
               for (int i = 0; i < entities.size(); i++) {
                 Entity entity = (Entity) entities.get(i);
+                if(entity instanceof BackgroundEntity && stopGame) {
+                	entity.setHorizontalMovement(0);
+                }
                 entity.move(delta);
             	alienSpawn();
             	 g.setColor(Color.white);
@@ -353,7 +359,7 @@ public class Game extends Canvas {
                 
                   	if(entity.tryToFire() == true) {
                   		
-                  		AlienShotDefault shot = new AlienShotDefault(this, "sprites/greenpoint.png", 
+                  		AlienShotDefault shot = new AlienShotDefault(this, "sprites/blueShot.png", 
                                 entity.getX(), entity.getY());
                   		entities.add(shot);
                   	}
@@ -361,7 +367,7 @@ public class Game extends Canvas {
                 if (entity instanceof AlienEntity) {
                 	if(entity.tryToFire() == true) {
 
-                		AlienShotDefault shot = new AlienShotDefault(this, "sprites/bluepower.png", 
+                		AlienShotDefault shot = new AlienShotDefault(this, "sprites/blueShot.png", 
                               entity.getX(), entity.getY());
                 		entities.add(shot);
                 }
@@ -451,45 +457,35 @@ public class Game extends Canvas {
             if (firePressed) {
               tryToFire();
             } // if
-		  
-		  if((background.getX() + background.getWidth()) < width) {
-            	
-            	backgroundRepeat = new BackgroundEntity(this, "sprites/city.png",background.getX() + background.getWidth(), 0);
-            	entities.add(1,backgroundRepeat);
-            	
-            	//System.out.println("background's X-coordinate is " + background.getX() );
-            	//System.out.println("backgroundRepeat's X-coordinate is " + backgroundRepeat.getX() );
-            }
-            
-            if(backgroundRepeat != null && (backgroundRepeat.getX() + backgroundRepeat.getWidth()) < width) {
-            	//System.out.println("background is at " + background.getX() + " and is moving at a speed of " + background.getHorizontalMovement());
-            	
-            	background.setX(0);
-            	entities.remove(backgroundRepeat);
-            	backgroundRepeat = null;
-            }
-		  
-	if(stopGame) {
-		for(int i = 0; i < entities.size(); i++) {
-			Entity entity = (Entity) entities.get(i);
-			if(entity instanceof AlienEntity || entity instanceof Asteroid
-			|| entity instanceof ShotAlien || entity instanceof AlienShotDefault || entity instanceof DeathEntity) {
-				entities.remove(entity);
-				removeEntities.add(entity);
-		   }//ifElse
-		}//for
-
-		background.setX(0);
-		backgroundRepeat.setX(0);
-		background.setHorizontalMovement(0);
-		backgroundRepeat.setHorizontalMovement(0);
-		boss.setHorizontalMovement(0);
-		boss.tryToFire();
-		if(boss.tryToFire() == true) {
-
-	chooseFire();
-		}
-
+		 if(!stopGame) {
+			  if((background.getX() + background.getWidth()) < width) {
+	            	
+	            	backgroundRepeat = new BackgroundEntity(this, "sprites/city.png",background.getX() + background.getWidth(), 0);
+	            	entities.add(1,backgroundRepeat);
+	            }
+	            
+	            if(backgroundRepeat != null && (backgroundRepeat.getX() + backgroundRepeat.getWidth()) < width) {
+	            	background.setX(0);
+	            	entities.remove(backgroundRepeat);
+	            	backgroundRepeat = null;
+	            }
+		 } 
+		
+		if(stopGame) {
+			for(int i = 0; i < entities.size(); i++) {
+				Entity entity = (Entity) entities.get(i);
+				if(entity instanceof AlienEntity || entity instanceof Asteroid
+				|| entity instanceof ShotAlien || entity instanceof AlienShotDefault || entity instanceof DeathEntity) {
+					entities.remove(entity);
+					removeEntities.add(entity);
+			   }//ifElse
+			}//for
+			
+			boss.setHorizontalMovement(0);
+			boss.tryToFire();
+			if(boss.tryToFire() == true) {
+				chooseFire();
+			}
 	}
            
             // pause
