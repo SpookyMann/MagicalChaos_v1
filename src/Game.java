@@ -60,7 +60,7 @@ public class Game extends Canvas {
         private int alienCount = 0; // # of aliens left on screen
         private int alienScore = 0;
         private String message = ""; // message to display while waiting
-                                     // for a key press
+        private int currentPowerUp = 0;                             // for a key press
         private long lastDeath = 0;
         private boolean logicRequiredThisLoop = false; // true if logic
         private boolean secondShot = false;                                               // needs to be 
