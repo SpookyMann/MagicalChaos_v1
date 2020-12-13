@@ -1,6 +1,6 @@
 /* ShotEntity.java
- * March 27, 2006
- * Represents player's ship
+ * December 12 2020
+ * Represnts a shot entity
  */
 public class ShotEntity extends Entity {
 
