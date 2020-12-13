@@ -1,9 +1,9 @@
 public class ItemEntity extends Entity{
 	
 	private double moveSpeed = 75; // horizontal speed
-	  private long lastAlienFire = 0;
-		int firingIntervalAlien = (int)(Math.random( ) * 500 + 400);
-	  private Game game; // the game in which the alien exists
+	private long lastAlienFire = 0;
+        int firingIntervalAlien = (int)(Math.random( ) * 500 + 400);
+	private Game game; // the game in which the alien exists
 
 	  /* construct a new alien
 	   * input: game - the game in which the alien is being created
@@ -59,7 +59,4 @@ public class ItemEntity extends Entity{
 	     // collisions with aliens are handled in ShotEntity and ShipEntity
 	   } // collidedWith
 	  
-
-
-
 }//ItemEntity
