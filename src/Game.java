@@ -22,12 +22,15 @@ public class Game extends Canvas {
         private boolean firePressed = false; // true if firing
         private boolean upPressed = false;  // true if left arrow key currently pressed
         private boolean downPressed = false; 
-	private boolean isBoss = false;
+        private boolean isBoss = false;
         private boolean stopGame = false;
-	private Entity boss;
+        private boolean changeSprite =  false;
+        private boolean isDeath = false;
+        private Entity boss;
         private int chooseFire;
+        private DeathEntity explosion;
 
-	private int width = 1000;
+        private int width = 1000;
         private int height = 1000;
         private boolean gameRunning = true;
         private ArrayList entities = new ArrayList(); // list of entities
@@ -38,6 +41,7 @@ public class Game extends Canvas {
         private Entity background;
         private Entity backgroundRepeat;
         public int lives = 3;
+        
         private double moveSpeed = 300; // hor. vel. of ship (px/s)
         private long lastFire = 0; // time last shot fired
         private long alienFire = 0;
@@ -193,14 +197,13 @@ public class Game extends Canvas {
         	   
            }
     
-           Entity alien = new DeathEntity(this, "sprites/death.png", x, y);
-                  entities.add(alien);
-                  if ((System.currentTimeMillis() - lastDeath) < deathInterval){
+           
+			/* if ((System.currentTimeMillis() - lastDeath) < deathInterval){
                        return;
                      } else {
                        lastDeath = System.currentTimeMillis();
                        entities.remove(alien);
-                     }
+                     }*/
 			if(alienScore == 4) {
 				isBoss = true;
 			}
@@ -384,15 +387,24 @@ public class Game extends Canvas {
                }
                entity.draw(g);
             } // for
-		 if(isBoss) {
+            if(isBoss) {
             	boss = new BossEntity(this, "sprites/boss.png", 1000, 0);
 	          	entities.add(boss);
 	          	isBoss = false;
             }
             
-            if(boss != null && boss.getX() <= 184) {
+            if(boss != null && boss.getX() <= 443) {
           		stopGame = true;
           	}
+            
+			
+			if(isDeath) {
+			
+				entities.remove(explosion);
+				removeEntities.add(explosion);
+
+			}
+         
 
             // brute force collisions, compare every entity
             // against every other entity.  If any collisions
@@ -406,10 +418,17 @@ public class Game extends Canvas {
                 if (me.collidesWith(him)) {
                   me.collidedWith(him);
                   him.collidedWith(me);
+                  if((me instanceof AlienEntity && him instanceof ShotEntity)||(him instanceof AlienEntity && him instanceof ShotEntity)) {
+                	  DeathEntity explosion = new DeathEntity(this, "sprites/death.png", me.getX(), me.getY());
+                	  entities.add(explosion);
+                	  isDeath = true;
+
+                 		
+                	  
+                  }
                 } // if
              } // inner for
            } // outer for
-
            // remove dead entities
            entities.removeAll(removeEntities);
            removeEntities.clear();
@@ -486,7 +505,9 @@ public class Game extends Canvas {
 			if(boss.tryToFire() == true) {
 				chooseFire();
 			}
-	}
+		}
+		
+	
            
             // pause
             try { Thread.sleep(100); } catch (Exception e) {}
