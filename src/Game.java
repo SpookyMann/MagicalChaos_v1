@@ -415,7 +415,7 @@ public class Game extends Canvas {
                 Entity me = (Entity)entities.get(i);
                 Entity him = (Entity)entities.get(j);
 
-                if (me.collidesWith(him)) {
+                 if (me.collidesWith(him)) {
                   me.collidedWith(him);
                   him.collidedWith(me);
                   if((me instanceof AlienEntity && him instanceof ShotEntity)||(him instanceof AlienEntity && him instanceof ShotEntity)) {
