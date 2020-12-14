@@ -1,6 +1,6 @@
 /* ShotEntity.java
- *December 12 2020
- * Creates a laser
+ * March 27, 2006
+ * Represents player's ship
  */
 
 //shooting class
@@ -8,7 +8,7 @@ public class LaserEntity extends Entity {
 
   //private double moveSpeed = 300; // horizontal speed shot moves
   private boolean used = false; // true if shot hits something
-  private Game game; // sets game
+  private Game game; // the game in which the ship exists
 
   /* construct the shot
    * input: game - the game in which the shot is being created
@@ -48,16 +48,18 @@ public class LaserEntity extends Entity {
      } // if
      
      // if it has hit an alien, kill it!
+     // if it has hit an alien, kill it!
      if (other instanceof ShipEntity) {
-	   // remove affect entities from the Entity list
-	   game.removeEntity(this);
-	   game.removeEntity(other);
-	   
-	   // notify the game that the alien is dead
-	   game.notifyDeath();
-	   used = true;
+       // remove affect entities from the Entity list
+       game.removeEntity(this);
+       game.removeEntity(other);
+       
+       // notify the game that the alien is dead
+       game.notifyDeath();
+       used = true;
      } // if
+
 
    } // collidedWith
 
-} // LaserEntity class
+} // LaserEntity
