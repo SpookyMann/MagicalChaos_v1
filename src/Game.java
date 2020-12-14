@@ -209,10 +209,9 @@ public class Game extends Canvas {
          	   entities.add(shield);
          	   currentPowerUp = 2;
             } else if (dropChance == 30 && currentPowerUp == 0) {
-         	   currentPowerUp = 3;
          	   Entity twoShot = new ItemEntity(this, "sprites/doubleShot.png", x, y);
-         	   entities.add(twoShot);
-         	   secondShot = true;         	   
+         	   entities.add(twoShot);    
+         	  currentPowerUp = 3;
             }//ifElse
             
             //once a alien has been killed, draw the explosion sprite at its coordinates
@@ -226,7 +225,7 @@ public class Game extends Canvas {
             }//ifElse
             
             //if the player has killed 50 aliens, make the boss boolean true
-            if(alienScore == 20) {
+            if(alienScore == 10) {
                 isBoss = true;
             }//ifElse
         }//NotifyAlienKilled
@@ -249,22 +248,21 @@ public class Game extends Canvas {
         		 
         		 //makes SecondShot true, which allows the player to fire doubleshots
         	  }else if(currentPowerUp == 3) {
-        	
+        		 secondShot = true;
         		 currentPowerUp = 0;
         	  }//ifElse        
          } // powerUp
    
         //selects which attack the boss will use
-          public void chooseFire() {
-        	 int choose = (int)(Math.random( ) * 6 + 1);
-        	 int ballY = (int)(Math.random( ) * 900 + 1);
-        	
-        	 if(choose == 1 || choose == 3 || choose == 5) {
-        		 Entity redBall = new BallEntity(this, "sprites/redBall.png", boss.getX(), ballY);
+         public void chooseFire() {
+        	 int choose = (int)(Math.random( ) * 2 + 1);
+         	 int y = (int)(Math.random( ) * 500 + 200);
+        	 if(choose == 1) {
+        		 Entity redBall = new BallEntity(this, "sprites/redBall.png", boss.getX(), y);
         		 entities.add(redBall);
         		 isBall = true;
-        	 }else if(choose == 2 || choose == 4 || choose == 6) {
-        		laser = new LaserEntity(this, "sprites/laser.png", 0, 279);
+        	 }else if(choose == 2) {
+        		laser = new LaserEntity(this, "sprites/laser.png", 0, y);
     			entities.add(laser);
     			isLaser = true;
         	 }//ifElse
@@ -310,7 +308,7 @@ public class Game extends Canvas {
         
          
          //spawns aliens from off the screen
-                public void alienSpawn() {
+         public void alienSpawn() {
 	    	 if ((System.currentTimeMillis() - lastAlien) < alienSpawnInterval)
                 return;
         	 else {
@@ -370,7 +368,7 @@ public class Game extends Canvas {
         	 }//ifElse
 	    	 
         }//alienSpawn
-	
+
 		/*
 		 * gameLoop
 	         * input: none
@@ -450,6 +448,11 @@ public class Game extends Canvas {
 					entities.remove(explosion);
 					removeEntities.add(explosion);
 					isDeath = false;
+	
+			    }//if
+			    if(isLaser) {
+					removeEntities.add(laser);
+					isLaser = false;
 	
 			    }//if
 
@@ -551,8 +554,9 @@ public class Game extends Canvas {
 	            	for(int i = 0; i < entities.size(); i++) {
 	            		Entity entity = (Entity) entities.get(i);
 	            		if(entity instanceof AlienEntity || entity instanceof Asteroid
-	            				|| entity instanceof ShotAlien || entity instanceof AlienShotDefault 
-	            				|| entity instanceof DeathEntity || entity instanceof SlasherEntity);
+	            				|| entity instanceof AlienShotDefault || entity instanceof ShotAlien || entity instanceof LevelTwoAlien
+	            				|| entity instanceof DeathEntity || entity instanceof SlasherEntity) {
+	            			entities.remove(entity);
 	            			removeEntities.add(entity);
 	            		}//ifElse
 	            	}//for
@@ -597,7 +601,10 @@ public class Game extends Canvas {
             lives = 3;
             message = "";
             currentPowerUp = 0;
-	    secondShot = false;
+            secondShot = false;
+            
+            
+            
             
         } // startGame
 
