@@ -79,7 +79,7 @@ public class ShipEntity extends Entity {
    *          with something
    */
    public void collidedWith(Entity other) {
-     if (other instanceof AlienEntity || other instanceof SlasherEntity || other instanceof LevelTwoAlien || other instanceof Asteroid) {
+     if (other instanceof AlienEntity || other instanceof SlasherEntity || other instanceof LevelTwoAlien || other instanceof Asteroid || other instanceof BossEntity) {
         game.notifyDeath();
      }else if(other instanceof ItemEntity) {
     	 game.powerUp(other);
