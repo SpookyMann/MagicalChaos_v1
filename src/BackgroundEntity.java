@@ -6,7 +6,7 @@ import java.awt.Graphics;
  */
 public class BackgroundEntity extends Entity {
 
-  private double moveSpeed = 75; // horizontal speed
+  private double moveSpeed = 60; // horizontal speed
 
   private Game game; // the game in which the alien exists
   private int width = 1280; // sets width of background
