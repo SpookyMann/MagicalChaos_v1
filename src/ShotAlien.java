@@ -4,9 +4,9 @@
  */
 public class ShotAlien extends Entity {
 
-  private double moveSpeed = 300; // horizontal speed shot moves
-  private boolean used = false; // true if shot hits something
-  private Game game; // the game in which the ship exists
+	private double moveSpeed = 300; // horizontal speed shot moves
+	private boolean used = false; // true if shot hits something
+	private Game game; // the game in which the ship exists
 
   /* construct the shot
    * input: game - the game in which the shot is being created
@@ -14,25 +14,25 @@ public class ShotAlien extends Entity {
    *              the sprite for the shot
    *        x, y - initial location of shot
    */
-  public ShotAlien(Game g, String r, int newX, int newY) {
-    super(r, newX, newY);  // calls the constructor in Entity
-    game = g;
-    dx = moveSpeed;
-  } // constructor
+	public ShotAlien(Game g, String r, int newX, int newY) {
+		super(r, newX, newY);  // calls the constructor in Entity
+		game = g;
+		dx = moveSpeed;
+	} // constructor
 
   /* move
    * input: delta - time elapsed since last move (ms)
    * purpose: move shot
    */
-  public void move (long delta){
-    super.move(delta);  // calls the move method in Entity
+	public void move (long delta){
+		super.move(delta);  // calls the move method in Entity
 
     // if shot moves off top of screen, remove it from entity list
-    if (x < -20) {
-      game.removeEntity(this);
-    } // if
+		if (x < -20) {
+			game.removeEntity(this);
+		} // if
 
-  } // move
+	} // move
 
 
   /* collidedWith
@@ -42,20 +42,22 @@ public class ShotAlien extends Entity {
    */
    public void collidedWith(Entity other) {
      // prevents double kills
-     if (used) {
-       return;
-     } // if
+	   int x = other.getX();
+	   int y = other.getY();
+	   if (used) {
+		   return;
+	   } // if
      
      // if it has hit an alien, kill it!
-     if (other instanceof AlienEntity || other instanceof LevelTwoAlien || other instanceof Asteroid) {
+	   if (other instanceof AlienEntity || other instanceof LevelTwoAlien || other instanceof Asteroid) {
        // remove affect entities from the Entity list
-       game.removeEntity(this);
-       game.removeEntity(other);
+		   game.removeEntity(this);
+		   game.removeEntity(other);
        
        // notify the game that the alien is dead
-       game.notifyAlienKilled(other.getX(), other.getY());
-       used = true;
-     } // if
+		   game.notifyAlienKilled(x,y);
+		   used = true;
+	   } // if
 
    } // collidedWith
 
