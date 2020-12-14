@@ -46,7 +46,7 @@ public class ShotEntity extends Entity {
      } // if
 
      // if it has hit an alien, kill it!
-     if (other instanceof AlienEntity || other instanceof Asteroid || other instanceof LevelTwoAlien) {
+     if (other instanceof AlienEntity || other instanceof Asteroid || other instanceof LevelTwoAlien || other instanceof BossEntity) {
     	 int x = other.getX();
     	 int y = other.getY();
 
