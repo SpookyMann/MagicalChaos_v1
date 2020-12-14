@@ -249,7 +249,7 @@ public class Game extends Canvas {
         		 
         		 //makes SecondShot true, which allows the player to fire doubleshots
         	  }else if(currentPowerUp == 3) {
-        		 secondShot = true;
+        	
         		 currentPowerUp = 0;
         	  }//ifElse        
          } // powerUp
@@ -310,13 +310,15 @@ public class Game extends Canvas {
         
          
          //spawns aliens from off the screen
-         public void alienSpawn() {
+                public void alienSpawn() {
 	    	 if ((System.currentTimeMillis() - lastAlien) < alienSpawnInterval)
                 return;
         	 else {
 	        	 lastAlien = System.currentTimeMillis();
-	        	 int en = (int)(Math.random( ) * 5 + 1);
+	        	 int en = (int)(Math.random( ) * 4 + 1);
+	         	 int as = (int)(Math.random( ) * 3 + 1);
 	        	 int y = (int)((Math.random( ) * 880) + 40);
+	        	 int y2 = (int)((Math.random( ) * 880) + 40);
         
 	        	 if(en == 1) {
 	        		 //easiest level alien
@@ -334,24 +336,8 @@ public class Game extends Canvas {
 	        		 Entity alien = new SlasherEntity  (this, "sprites/sakuya.png", 1300, ship.getY()); 
                      entities.add(alien);
                      alienCount++;
-	        	 }else if(en == 4 && alienScore > 4 ) {
-	        		 //asteroids
-	        		 int num = (int)(Math.random( ) * 3 + 1);
-	        		 //choses which size asteroid to spawn
-	        		 if(num == 1) {
-	        			 Entity alien = new Asteroid(this, "sprites/largeRock.png", 1300, y);
-	        			 entities.add(alien);
-	        			 alienCount++;
-	        		 }else if(num == 2) {
-	        			 Entity alien = new Asteroid(this, "sprites/mediumRock.png", 1300, y);
-	        			 entities.add(alien);
-	        			 alienCount++;
-	        		 }else {
-	        			 Entity alien = new Asteroid(this, "sprites/smallRock.png", 1300, y);
-	        			 entities.add(alien);
-	        			 alienCount++;
-	        		 }//ifElse
-	        	 }else if(en == 5 && alienScore > 10) {
+	
+	        	 }else if(en == 4 && alienScore > 8) {
 	        		 //hardest alien
 	        		 Entity alien = new LevelTwoAlien(this, "sprites/aya.png", 1300, y);
 	        		 entities.add(alien);
@@ -362,10 +348,29 @@ public class Game extends Canvas {
 	        		 entities.add(alien);
 	        		 alienCount++;
 	        	 }//else
+	       
+	        	 if(as == 3 && alienScore > 4 ) {
+	        		 //asteroids
+	        		 int num = (int)(Math.random( ) * 3 + 1);
+	        		 //choses which size asteroid to spawn
+	        		 if(num == 1) {
+	        			 Entity alien = new Asteroid(this, "sprites/largeRock.png", 1300, y2);
+	        			 entities.add(alien);
+	        			 alienCount++;
+	        		 }else if(num == 2) {
+	        			 Entity alien = new Asteroid(this, "sprites/mediumRock.png", 1300, y2);
+	        			 entities.add(alien);
+	        			 alienCount++;
+	        		 }else {
+	        			 Entity alien = new Asteroid(this, "sprites/smallRock.png", 1300, y2);
+	        			 entities.add(alien);
+	        			 alienCount++;
+	        		 }//ifElse
+	        	 }//if
         	 }//ifElse
 	    	 
         }//alienSpawn
-
+	
 		/*
 		 * gameLoop
 	         * input: none
@@ -592,6 +597,7 @@ public class Game extends Canvas {
             lives = 3;
             message = "";
             currentPowerUp = 0;
+	    secondShot = false;
             
         } // startGame
 
