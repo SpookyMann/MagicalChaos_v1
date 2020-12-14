@@ -318,6 +318,7 @@ public class Game extends Canvas {
 	        	 int y = (int)((Math.random( ) * 880) + 40);
         
 	        	 if(en == 1) {
+	        		 System.out.println("test1");
 	        		 //easiest level alien
 	        		 Entity alien = new AlienEntity(this, "sprites/cirno.png", 1300, y);
 	        		 entities.add(alien);
@@ -356,6 +357,7 @@ public class Game extends Canvas {
 	        		 entities.add(alien);
 	        		 alienCount++;
 	        	 }else {
+	        		 System.out.println("test");
 	        		 Entity alien = new AlienEntity(this, "sprites/cirno.png", 1300, y); 
 	        		 entities.add(alien);
 	        		 alienCount++;
@@ -427,7 +429,7 @@ public class Game extends Canvas {
 			    
 			    //if isBoss == true, draw the boss and stop the game. Then make the boss boolean false so that it doesn't keep spawning
 			    if(isBoss) {
-			    	boss = new BossEntity(this, "sprites/tenshi.png", 1280, 0);
+			    	boss = new BossEntity(this, "sprites/tenshi.png", 1280, 180);
 			    	entities.add(boss);
 			    	isBoss = false;
 			    }//if
@@ -457,14 +459,14 @@ public class Game extends Canvas {
 		                if (me.collidesWith(him)) {
 		                	me.collidedWith(him);
 		                	him.collidedWith(me);
-		                	if((me instanceof AlienEntity && him instanceof ShotEntity)) {
+		                	if((me instanceof AlienEntity && him instanceof ShotEntity && !(him instanceof BossEntity))) {
 		                		
 		                		//draw the deathEntity
 		                		explosion = new DeathEntity(this, "sprites/death.png", me.getX(), me.getY());
 		                		entities.add(explosion);
 		                		isDeath = true; 
 		                	}//if
-		                	if((him instanceof AlienEntity && me instanceof ShotEntity)) {
+		                	if((him instanceof AlienEntity && me instanceof ShotEntity)&&!(him instanceof BossEntity)) {
 		                		//draw the deathEntity
 		                		explosion = new DeathEntity(this, "sprites/death.png", him.getX(),him.getY());
 		                		entities.add(explosion);
@@ -490,7 +492,7 @@ public class Game extends Canvas {
 			    g.setFont(new Font("TimesRoman", Font.PLAIN, 40)); 
 			    g.setColor(Color.white);
 			    g.drawString(message, (1280 - g.getFontMetrics().stringWidth(message))/2, 250);
-			    g.drawString("Magical Chaos! You have " + lives + " lives left!  You've killed " + alienScore + " Aliens!", (1280 - g.getFontMetrics().stringWidth("Magical Chaos! You have " + lives +  " lives left! " + " You've killed " + alienScore + " Aliens!"))/2, 50);
+			    g.drawString("Magical Chaos! You have " + lives + " lives left!  Your score is " + alienScore, (1280 - g.getFontMetrics().stringWidth("Magical Chaos! You have " + lives +  " lives left! " + " You've killed " + alienScore + " Aliens!"))/2, 50);
 
 			    // clear graphics and flip buffer
 			    g.dispose();
@@ -587,6 +589,8 @@ public class Game extends Canvas {
             alienScore = 0;
             lives = 3;
             message = "";
+            currentPowerUp = 0;
+            
 
         } // startGame
 
