@@ -76,4 +76,4 @@ public class ShotEntity extends Entity {
 
    } // collidedWith
 
-} // ShipEntity class
+} // ShotEntity class
