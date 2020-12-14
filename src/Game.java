@@ -20,7 +20,7 @@ import java.util.TimerTask;
 public class Game extends Canvas {
 
 
-      	      	private BufferStrategy strategy;   // take advantage of accelerated graphics
+      	private BufferStrategy strategy;   // take advantage of accelerated graphics
         private boolean waitingForKeyPress = true;  // true if game held up until
                                                     // a key is pressed
         private boolean leftPressed = false;  // true if left arrow key currently pressed
@@ -32,9 +32,9 @@ public class Game extends Canvas {
         private boolean stopGame = false;
         private boolean changeSprite =  false;
         private boolean isDeath = false;
-	private boolean isLaser = false;
-	private boolean isBall = false;
-	private boolean logicRequiredThisLoop = false; // true if logic
+	    private boolean isLaser = false;
+	    private boolean isBall = false;
+	    private boolean logicRequiredThisLoop = false; // true if logic
         private boolean secondShot = false;                                               
                                              
 	    private boolean gameRunning = true;
@@ -75,7 +75,8 @@ public class Game extends Canvas {
         private String message = ""; // message to display while waiting
         private int currentPowerUp = 0;               
         private long lastDeath = 0;
-                             
+                
+
     	/*
     	 * Construct our game and set it running.
     	 */
@@ -175,9 +176,9 @@ public class Game extends Canvas {
 			if(lives == 0){
 	           message = "You FAILED!  Would you like to try again?";
 	          	 
- waitingForKeyPress = true;
-	        		 boss = null;
-	        		 stopGame = false;
+	           waitingForKeyPress = true;
+	           boss = null;
+	           stopGame = false;
 	        }//if
 	    } // notifyDeath
 
@@ -217,9 +218,9 @@ public class Game extends Canvas {
             //once a alien has been killed, draw the explosion sprite at its coordinates
             Entity alien = new DeathEntity(this, "sprites/death.png", x, y);
             entities.add(alien);
-            if ((System.currentTimeMillis() - lastDeath) < deathInterval)
+            if ((System.currentTimeMillis() - lastDeath) < deathInterval) {
             	return;
-            else {
+            }else{
 			    lastDeath = System.currentTimeMillis();
 			    entities.remove(alien);
             }//ifElse
@@ -229,9 +230,9 @@ public class Game extends Canvas {
                 isBoss = true;
             }//ifElse
         }//NotifyAlienKilled
-         
         
-         public void powerUp(Entity alien) {
+        //runs the code for whichever power up the character obtained
+        public void powerUp(Entity alien) {
         	 entities.remove(alien);
         	 
         	 //adds an extra life
@@ -253,10 +254,9 @@ public class Game extends Canvas {
         	  }//ifElse        
          } // powerUp
    
-	
+        //selects which attack the boss will use
          public void chooseFire() {
         	 int choose = (int)(Math.random( ) * 2 + 1);
-        	
         	 if(choose == 1) {
         		 Entity redBall = new BallEntity(this, "sprites/redBall.png", boss.getX(), boss.getY());
         		 entities.add(redBall);
@@ -307,8 +307,8 @@ public class Game extends Canvas {
          } // tryToFire2
         
          
- 	//spawns aliens from off the screen
-	     public void alienSpawn() {
+         //spawns aliens from off the screen
+         public void alienSpawn() {
 	    	 if ((System.currentTimeMillis() - lastAlien) < alienSpawnInterval)
                 return;
         	 else {
@@ -317,7 +317,6 @@ public class Game extends Canvas {
 	        	 int y = (int)((Math.random( ) * 880) + 40);
         
 	        	 if(en == 1) {
-	        		 System.out.println("test1");
 	        		 //easiest level alien
 	        		 Entity alien = new AlienEntity(this, "sprites/cirno.png", 1300, y);
 	        		 entities.add(alien);
@@ -336,6 +335,7 @@ public class Game extends Canvas {
 	        	 }else if(en == 4 && alienScore > 4 ) {
 	        		 //asteroids
 	        		 int num = (int)(Math.random( ) * 3 + 1);
+	        		 //choses which size asteroid to spawn
 	        		 if(num == 1) {
 	        			 Entity alien = new Asteroid(this, "sprites/largeRock.png", 1300, y);
 	        			 entities.add(alien);
@@ -352,11 +352,10 @@ public class Game extends Canvas {
 	        	 }else if(en == 5 && alienScore > 10) {
 	        		 //hardest alien
 	        		 Entity alien = new LevelTwoAlien(this, "sprites/aya.png", 1300, y);
-                    
 	        		 entities.add(alien);
 	        		 alienCount++;
 	        	 }else {
-	        		 System.out.println("test");
+	        		
 	        		 Entity alien = new AlienEntity(this, "sprites/cirno.png", 1300, y); 
 	        		 entities.add(alien);
 	        		 alienCount++;
@@ -440,6 +439,7 @@ public class Game extends Canvas {
            
 			    //remove DeatheEntity
 			    if(isDeath) {
+			    	
 					entities.remove(explosion);
 					removeEntities.add(explosion);
 					isDeath = false;
@@ -468,6 +468,7 @@ public class Game extends Canvas {
 		                	if((him instanceof AlienEntity && me instanceof ShotEntity)&&!(him instanceof BossEntity)) {
 		                		//draw the deathEntity
 		                		explosion = new DeathEntity(this, "sprites/death.png", him.getX(),him.getY());
+		          
 		                		entities.add(explosion);
 		                		isDeath = true; 
 		                	}//if
@@ -590,7 +591,6 @@ public class Game extends Canvas {
             message = "";
             currentPowerUp = 0;
             
-
         } // startGame
 
 
@@ -678,7 +678,6 @@ public class Game extends Canvas {
                        pressCount++;
                      } // else
                    } // if waitingForKeyPress
-
                    // if escape is pressed, end game
                    if (e.getKeyChar() == 27) {
                      System.exit(0);
