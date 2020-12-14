@@ -134,7 +134,7 @@ public class Game extends Canvas {
               
               //spawns first alien
   
-                  Entity alien = new AlienEntity(this, "sprites/tounge.png", 
+                  Entity alien = new AlienEntity(this, "sprites/cirno.png", 
                       500 + (10 * 40),
                       50 + (10 * 30));
                   entities.add(alien);
@@ -186,7 +186,7 @@ public class Game extends Canvas {
            alienCount--;
            alienScore++;
            
-           dropChance = (int) (Math.random()*20) + 1;
+           dropChance = (int) (Math.random()*40) + 1;
            
            if(dropChance == 10 && currentPowerUp == 0) {
         	   Entity heart = new ItemEntity(this, "sprites/lifeHeart.png", x, y);
@@ -195,28 +195,30 @@ public class Game extends Canvas {
                
             // powerUp(alien);
         	   
-           } else if (dropChance == 20 && currentPowerUp == 0){
-        	   Entity shield = new ItemEntity(this, "sprites/35.png", x, y);
-        	   entities.add(shield);
-        	   currentPowerUp = 2;
-           } else if (dropChance == 15 && currentPowerUp == 0) {
-        	  
-        	   currentPowerUp = 3;
-        	   Entity twoShot = new ItemEntity(this, "sprites/manyStick.png", x, y);
-        	   entities.add(twoShot);
-        	   secondShot = true;
-        	   
-        	   
-           }
+           if(dropChance == 10 && currentPowerUp == 0) {
+         	   Entity heart = new ItemEntity(this, "sprites/1up.png", x, y);
+         	   currentPowerUp = 1;
+                entities.add(heart);
+                
+             // powerUp(alien);
+         	   
+            } else if (dropChance == 20 && currentPowerUp == 0){
+         	   Entity shield = new ItemEntity(this, "sprites/shield.png", x, y);
+         	   entities.add(shield);
+         	   currentPowerUp = 2;
+            } else if (dropChance == 30 && currentPowerUp == 0) {
+         	  
+         	   currentPowerUp = 3;
+         	   Entity twoShot = new ItemEntity(this, "sprites/doubleShot.png", x, y);
+         	   entities.add(twoShot);
+         	   secondShot = true;
+         	   System.out.println("double shot");
+         	   
+            }
     
-           Entity alien = new DeathEntity(this, "sprites/death.png", x, y);
-                  entities.add(alien);
-                  if ((System.currentTimeMillis() - lastDeath) < deathInterval){
-                       return;
-                     } else {
-                       lastDeath = System.currentTimeMillis();
-                       entities.remove(alien);
-                     }
+           if(alienScore == 2) {
+ 				isBoss = true;
+ 	   }
              
            
          } // notifyAlienKilled
@@ -235,9 +237,8 @@ public class Game extends Canvas {
         	  }else if(currentPowerUp == 3) {
         		  secondShot = true;
         		  currentPowerUp = 0;
-        	  }
-        
-     	}//powerUp
+        	  }         
+          } // powerUp
    
 	
 	    public void chooseFire() {
@@ -304,19 +305,19 @@ public class Game extends Canvas {
         	}else {
         	lastAlien = System.currentTimeMillis();
         	int en = (int)(Math.random( ) * 5 + 1);
-        	int y = (int)(Math.random( ) * 900 + 200);
+        	int y = (int)((Math.random( ) * 880) + 40);
         	
            
           	if(en == 1) {
           		//easiest level alien
-          		//System.out.println("1");
-                Entity alien = new AlienEntity(this, "sprites/tounge.png", 1000, y);
+          		System.out.println("1");
+                Entity alien = new AlienEntity(this, "sprites/cirno.png", 1300, y);
                 entities.add(alien);
                 alienCount++;
           	}else if(en == 2 && alienScore > 1){
           		//second easiest level alien
-          	  //System.out.println("2");
-          	  Entity alien = new AlienEntity(this, "sprites/greenFace.png", 1000, y); 
+          	  System.out.println("2");
+          	  Entity alien = new AlienEntity(this, "sprites/alice.png", 1300, y); 
                      
                     entities.add(alien);
                  
@@ -325,7 +326,7 @@ public class Game extends Canvas {
             }else if(en == 3 && alienScore > 4) {
             	//third easiest level alien
             	System.out.println("3");
-            	  Entity alien = new LevelTwoAlien(this, "sprites/snake.png", 1000, y); 
+            	  Entity alien = new SlasherEntity  (this, "sprites/sakuya.png", 1300, ship.getY()); 
                       entities.add(alien);
                       alienCount++;
           	
@@ -333,27 +334,27 @@ public class Game extends Canvas {
             	//asteroids
             	int num = (int)(Math.random( ) * 3 + 1);
             	if(num == 1) {
-            	  Entity alien = new Asteroid(this, "sprites/bigAsteroid.png", 1000, y);
+            	  Entity alien = new Asteroid(this, "sprites/largeRock.png", 1300, y);
                     entities.add(alien);
                     alienCount++;
             	}else if(num == 2) {
-            		Entity alien = new Asteroid(this, "sprites/mediumAsteroid.png", 1000, y);
+            		Entity alien = new Asteroid(this, "sprites/mediumRock.png", 1300, y);
                     entities.add(alien);
                     alienCount++;
             	}else {
-            		Entity alien = new Asteroid(this, "sprites/smallAsteroid.png", 1000, y);
+            		Entity alien = new Asteroid(this, "sprites/smallRock.png", 1300, y);
                     entities.add(alien);
                     alienCount++;
             	}
             }else if(en == 5 && alienScore > 10) {
-          	  //System.out.println("5");
-          	  Entity alien = new AlienEntity(this, "sprites/creep.png", 1000, y);
+          	  System.out.println("5");
+          	  Entity alien = new LevelTwoAlien(this, "sprites/aya.png", 1300, y);
                     
                     entities.add(alien);
                     alienCount++;
             }else {
             	System.out.println("last");
-                Entity alien = new AlienEntity(this, "sprites/blueEnemy.png", 1000, y); 
+                Entity alien = new AlienEntity(this, "sprites/cirno.png", 1300, y); 
                  
                 entities.add(alien);
             
@@ -388,13 +389,13 @@ public class Game extends Canvas {
             // get graphics context for the accelerated surface and make it black
            Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
             g.setColor(new Color(0,0,0));
-            g.fillRect(0,0,1600,1200);
+            g.fillRect(0,0,1280,1024);
             g.setColor(new Color(128,128,128));
-            g.fillRect(0,0,1000,100);
+            g.fillRect(0,0,1280,100);
             g.setColor(Color.white);
             String str3 = String.valueOf(alienScore); 
             g.drawString(str3, 50, 50);
-            g.drawString("Project 42!", (1000 - g.getFontMetrics().stringWidth("Project 42!"))/2, 50);
+            g.drawString("Magical Chaos!", (1280 - g.getFontMetrics().stringWidth("Magical Chaos"))/2, 500);
             String str4 = String.valueOf(lives); 
             g.drawString("You have " + str4 + " lives", 750, 50);
             // move each entity
@@ -417,7 +418,7 @@ public class Game extends Canvas {
                 
                   	if(entity.tryToFire() == true) {
                   		
-                  		AlienShotDefault shot = new AlienShotDefault(this, "sprites/blueShot.png", 
+                  		AlienShotDefault shot = new AlienShotDefault(this, "sprites/energyblast.png", 
                                 entity.getX(), entity.getY());
                   		entities.add(shot);
                   	}
@@ -425,7 +426,7 @@ public class Game extends Canvas {
                 if (entity instanceof AlienEntity) {
                 	if(entity.tryToFire() == true) {
 
-                		AlienShotDefault shot = new AlienShotDefault(this, "sprites/blueShot.png", 
+                		AlienShotDefault shot = new AlienShotDefault(this, "sprites/iceblade.png", 
                               entity.getX(), entity.getY());
                 		entities.add(shot);
                 }
@@ -442,13 +443,14 @@ public class Game extends Canvas {
                }
                entity.draw(g);
             } // for
+		  
             if(isBoss) {
-            	boss = new BossEntity(this, "sprites/boss.png", 1000, 0);
+            	boss = new BossEntity(this, "sprites/tenshi.png", 1200, 200);
 	          	entities.add(boss);
 	          	isBoss = false;
             }
             
-            if(boss != null && boss.getX() <= 443) {
+            if(boss != null && boss.getX() <= 900) {
           		stopGame = true;
           	}
             
@@ -476,10 +478,7 @@ public class Game extends Canvas {
                   if((me instanceof AlienEntity && him instanceof ShotEntity)||(him instanceof AlienEntity && him instanceof ShotEntity)) {
                 	  DeathEntity explosion = new DeathEntity(this, "sprites/death.png", me.getX(), me.getY());
                 	  entities.add(explosion);
-                	  isDeath = true;
-
-                 		
-                	  
+                	  isDeath = true;  
                   }
                 } // if
              } // inner for
@@ -501,7 +500,7 @@ public class Game extends Canvas {
            if (waitingForKeyPress) {
              g.setColor(Color.white);
              g.drawString(message, (1000 - g.getFontMetrics().stringWidth(message))/2, 250);
-             g.drawString("Project 42!", (1000 - g.getFontMetrics().stringWidth("Project 42!"))/2, 300);
+             g.drawString("Magical Chaos!", (1280 - g.getFontMetrics().stringWidth("Magical Chaos!"))/2, 300);
            }  // if
 
             // clear graphics and flip buffer
@@ -559,6 +558,13 @@ public class Game extends Canvas {
 					removeEntities.add(entity);
 			   }//ifElse
 			}//for
+			
+			for(int i = 0; i < entities.size(); i++) {
+  				Entity entity = (Entity) entities.get(i);
+  		        if(entity instanceof BackgroundEntity) {
+  	            	   entity.setHorizontalMovement(0);
+  	            }
+  			}
 			
 			boss.setHorizontalMovement(0);
 			boss.tryToFire();
