@@ -20,7 +20,7 @@ import java.util.TimerTask;
 public class Game extends Canvas {
 
 
-      	private BufferStrategy strategy;   // take advantage of accelerated graphics
+      	      	private BufferStrategy strategy;   // take advantage of accelerated graphics
         private boolean waitingForKeyPress = true;  // true if game held up until
                                                     // a key is pressed
         private boolean leftPressed = false;  // true if left arrow key currently pressed
@@ -32,10 +32,10 @@ public class Game extends Canvas {
         private boolean stopGame = false;
         private boolean changeSprite =  false;
         private boolean isDeath = false;
-	    private boolean isLaser = false;
-	    private boolean isBall = false;
-	    private boolean logicRequiredThisLoop = false; // true if logic
-        private boolean secondShot = false;                                               // needs to be 
+	private boolean isLaser = false;
+	private boolean isBall = false;
+	private boolean logicRequiredThisLoop = false; // true if logic
+        private boolean secondShot = false;                                               
                                              
 	    private boolean gameRunning = true;
         
@@ -44,7 +44,7 @@ public class Game extends Canvas {
         private int width = 1280;
         private int height = 1024;
   
-        private ArrayList entities = new ArrayList(); // list of entities                                     // in game
+        private ArrayList entities = new ArrayList(); // list of entities                             
         private ArrayList removeEntities = new ArrayList(); // list of entities to remove this loop
         
         private Entity boss;
@@ -73,10 +73,9 @@ public class Game extends Canvas {
         private int alienCount = 0; // # of aliens left on screen
         private int alienScore = 0;
         private String message = ""; // message to display while waiting
-        private int currentPowerUp = 0;                             // for a key press
+        private int currentPowerUp = 0;               
         private long lastDeath = 0;
-                  // applied this loop
-
+                             
     	/*
     	 * Construct our game and set it running.
     	 */
