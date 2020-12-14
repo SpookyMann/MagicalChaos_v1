@@ -1,10 +1,10 @@
-/* AlienEntity.java
- * March 27, 2006
- * Represents one of the aliens
+/* DeathEntity.java
+ * December 12, 2020
+ * Represents the explosion animation 
  */
 public class DeathEntity extends Entity {
 
-  private double moveSpeed = 75; // horizontal speed
+  private double moveSpeed = 0; // horizontal speed
 
   private Game game; // the game in which the alien exists
 
@@ -24,35 +24,10 @@ public class DeathEntity extends Entity {
    * purpose: move alien
    */
   public void move (long delta){
-    // if we reach left side of screen and are moving left
-    // request logic update
-    if ((dx < 0) && (x < 10)) {
-      game.updateLogic();   // logic deals with moving entities
-                            // in other direction and down screen
-    } // if
 
-    // if we reach right side of screen and are moving right
-    // request logic update
-    if ((dx > 0) && (x > 950)) {
-      game.updateLogic();
-    } // if
-    
     // proceed with normal move
     super.move(delta);
   } // move
-
-
-  /* doLogic
-   * Updates the game logic related to the aliens,
-   * ie. move it down the screen and change direction
-   */
-  public void doLogic() {
-    // swap horizontal direction and move down screen 10 pixels
-    if(dx < 0){
-    //  game.removeEntities.add(entity)
-    }
-  } // doLogic
- 
 
   /* collidedWith
    * input: other - the entity with which the alien has collided
@@ -60,8 +35,7 @@ public class DeathEntity extends Entity {
    *          with something
    */
    public void collidedWith(Entity other) {
-     // collisions with aliens are handled in ShotEntity and ShipEntity
 	   return;
    } // collidedWith
-  
-} // AlienEntity class
+
+} // DeathEntity class

@@ -1,13 +1,11 @@
 /* ShotEntity.java
- * December 12 2020
- * Represnts a shot entity
+ * December 12, 2020
+ * The players bullet
  */
 public class ShotEntity extends Entity {
 
   private double moveSpeed = 800; // horizontal speed shot moves
   private boolean used = false; // true if shot hits something
-  private long deathInterval = 300;
-  private long lastDeath = System.currentTimeMillis();
   private Game game; // the game in which the ship exists
   /* construct the shot
    * input: game - the game in which the shot is being created
@@ -17,8 +15,8 @@ public class ShotEntity extends Entity {
    */
   public ShotEntity(Game g, String r, int newX, int newY) {
     super(r, newX, newY);  // calls the constructor in Entity
-    game = g;
-    dx = moveSpeed;
+    game = g; // sets game
+    dx = moveSpeed; // sets movement speed
   } // constructor
 
   /* move
@@ -28,8 +26,8 @@ public class ShotEntity extends Entity {
   public void move (long delta){
     super.move(delta);  // calls the move method in Entity
 
-    // if shot moves off top of screen, remove it from entity list
-    if (x < -20) {
+    // if shot moves off right side of the screen, remove it from entity list
+    if (x > 1200) {
       game.removeEntity(this);
     } // if
 
@@ -46,32 +44,19 @@ public class ShotEntity extends Entity {
      if (used) {
        return;
      } // if
-     
+
      // if it has hit an alien, kill it!
      if (other instanceof AlienEntity || other instanceof Asteroid || other instanceof LevelTwoAlien) {
     	 int x = other.getX();
     	 int y = other.getY();
-    	/* other.createSprite("sprites/death.png");
-    	 other.setHorizontalMovement(0);
-    	 other.setVerticalMovement(0);
-    	 /*if ((System.currentTimeMillis() - lastDeath) < deathInterval){
-    		 return;
-    	 } else if ((System.currentTimeMillis() - lastDeath) > deathInterval){
-         // remove affect entities from the Entity list
-         game.removeEntity(this);
-         game.removeEntity(other);
-       
-         // notify the game that the alien is dead
-         game.notifyAlienKilled(x, y);
-         used = true;
-    	 }*/
-     // remove affect entities from the Entity list
-     game.removeEntity(this);
-     game.removeEntity(other);
-    	 
-     // notify the game that the alien is dead 
-     game.notifyAlienKilled(x, y);
-     used = true;
+
+    	 // remove affect entities from the Entity list
+    	 game.removeEntity(this);
+    	 game.removeEntity(other);
+
+    	 // notify the game that the alien is dead
+    	 game.notifyAlienKilled(x, y);
+    	 used = true;
      } // if
 
    } // collidedWith

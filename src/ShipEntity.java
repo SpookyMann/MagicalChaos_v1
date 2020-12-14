@@ -1,16 +1,16 @@
 import java.util.ArrayList;
 
 /* ShipEntity.java
- * March 27, 2006
+ * Decmeber 12, 2020
  * Represents player's ship
  */
 public class ShipEntity extends Entity {
-	
+
   private Game game; // the game in which the ship exists
-  public String sprites [] = {"sprites/reimu_jump.png", "sprites/reimu_dash.png", 
-		  						"sprites/reimu_back_dash.png", "sprites/reimu_falling.png"};
+  public String sprites [] = {"sprites/reimu.png", "sprites/reimu_jump.png", "sprites/reimu_dash.png",
+		  						"sprites/reimu_back_dash.png", "sprites/reimu_fall.png"};
   private String currentFrame;
- 
+
   /* construct the player's ship
    * input: game - the game in which the ship is being created
    *        ref - a string with the name of the image associated to
@@ -18,15 +18,15 @@ public class ShipEntity extends Entity {
    *        x, y - initial location of ship
    */
   public ShipEntity(Game g, int newX, int newY) {
-    super("sprites/reimu_jump.png", newX, newY);  // calls the constructor in Entity
+    super("sprites/reimu.png", newX, newY);  // calls the constructor in Entity
     game = g;
     currentFrame = sprites[0];
   } // constructor
 
-  
+
   /* move
    * input: delta - time elapsed since last move (ms)
-   * purpose: move ship 
+   * purpose: move ship
    */
   public void move (long delta){
     // stop at left side of screen
@@ -34,39 +34,44 @@ public class ShipEntity extends Entity {
       return;
     } // if
     // stop at right side of screen
-    if ((dx > 0) && (x > 930)) {
+    if ((dx > 0) && (x > 1200)) {
       return;
     } // if
     // stop at bottom of screen
-    if ((dy > 0) && (y > 930)) {
+    if ((dy > 0) && (y > 890)) {
         return;
     } // if
     // stop at top of screen
-    if ((dy < 0) && (y < 25)) {
+    if ((dy < 0) && (y < 10)) {
         return;
     } // if
-    
+
+    // sprite animations
     if(dx == 0 && dy == 0) {
     	currentFrame = sprites[0];
-    }
+    }// if
     if(dx > 0) {
-    	currentFrame = sprites[1];
-    }
-    if(dx < 0) {
     	currentFrame = sprites[2];
-    }
-    if(dy > 0) {
+    }// if
+    if(dx < 0) {
     	currentFrame = sprites[3];
-    }
-      
+    }// if
+    if(dy > 0) {
+    	currentFrame = sprites[4];
+    }// if
+    if(dy < 0) {
+    	currentFrame = sprites[1];
+    } // if
+
     super.move(delta);  // calls the move method in Entity
   } // move
-  
+
+  // changes the animation frame
   public void createSprite(String r) {
 		r = currentFrame;
 	  	super.createSprite(r);
-  }
-  
+  } // createSprite
+
 
   /* collidedWith
    * input: other - the entity with which the ship has collided
@@ -74,12 +79,12 @@ public class ShipEntity extends Entity {
    *          with something
    */
    public void collidedWith(Entity other) {
-     if (other instanceof AlienEntity || other instanceof LevelTwoAlien || other instanceof Asteroid) {
+     if (other instanceof AlienEntity || other instanceof SlasherEntity || other instanceof LevelTwoAlien || other instanceof Asteroid) {
         game.notifyDeath();
      }else if(other instanceof ItemEntity) {
     	 game.powerUp(other);
     	 game.lives++;
      }
-   } // collidedWith    
+   } // collidedWith
 
 } // ShipEntity class

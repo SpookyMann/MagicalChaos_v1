@@ -1,17 +1,16 @@
 
-
-/* AlienEntity.java
- * March 27, 2006
- * Represents one of the aliens
+/* BossEntity.java
+ * December 12, 2020
+ * Represents the boss 
  */
 public class BossEntity extends Entity {
 	 private long lastBossFire =  System.currentTimeMillis();
 	 private int firingIntervalBoss = (int)(Math.random( ) * 1000 + 800);
 	 private boolean used = false; // true if shot hits something
-	 private Entity lasar;
+	 private Entity laser; // calls laser entity
 	 private double moveSpeed = 75; // horizontal speed
-	 private int lives = 10;
-	  
+	 private int lives = 200; // boss health
+
 
   private Game game; // the game in which the alien exists
 
@@ -43,72 +42,63 @@ public class BossEntity extends Entity {
 	    if ((dx > 0) && (x > 950)) {
 	      game.updateLogic();
 	    } // if
-	    
+
 	    // proceed with normal move
 	    super.move(delta);
-	  } // move
+  } // move
 
 
-  /* doLogic
-   * Updates the game logic related to the aliens,
-   * ie. move it down the screen and change direction
-   */
-  
+  // gets boss health
   public int getLives() {
 	  return this.lives;
-  }
-  public void doLogic() {
-    // swap horizontal direction and move down screen 10 pixels
-    if(dx < 0){
-    //  game.removeEntities.add(entity)
-    }
-  } // doLogic
- 
+  } // getLives
+
   public boolean tryToFire() {
-	  int randNum = (int)(Math.random() * 15); 
+	  int randNum = (int)(Math.random() * 15);
 	  if(randNum == 1 && (System.currentTimeMillis() - lastBossFire) > firingIntervalBoss){
 		  lastBossFire = System.currentTimeMillis();
 
 		  return true;
-		 
+
             }//if
    	   return false;
   }//tryToFire
+
+  // returns vertical position of boss
+  public int getX() {
+      return (int) x;
+    } // getX
 
   /* collidedWith
    * input: other - the entity with which the alien has collided
    * purpose: notification that the alien has collided
    *          with something
    */
-  
-  public int getX() {
-      return (int) x;
-    } // getX
-  
 
   public void collidedWith(Entity other) {
 	     // prevents double kills
 	     if (used) {
 	       return;
 	     } // if
-	     
-	      // if it has hit an alien, kill it!
+
+	      // if it has hit you, you die!
 	     if (other instanceof ShipEntity) {
 	       // remove affect entities from the Entity list
-	    	
-	       
-	       // notify the game that the alien is dead
+
+
+	       // notify the game that you are dead
 	       game.notifyDeath();
 	       used = true;
 	     } // if
-	     
+
+	     // notify game of boss death
 	     if(other instanceof ShotEntity) {
 	    	 lives--;
 	    	 if(lives == 0) {
 	    		 game.notifyWin();
 	    		 game.removeEntity(this);
 	    	 }
-	     }
+	     }// if
 
 	   } // collidedWith
-} // AlienEntity class
+} // BossEntity class

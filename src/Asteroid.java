@@ -1,6 +1,6 @@
-/* AlienEntity.java
- * March 27, 2006
- * Represents one of the aliens
+/* Astroid.java
+ * December 12, 2020
+ * Represents the rock obsticals 
  */
 
 //alien class
@@ -18,7 +18,7 @@ public class Asteroid extends Entity {
    */
   public Asteroid(Game g, String r, int newX, int newY) {
     super(r, newX, newY);  // calls the constructor in Entity
-    game = g;
+    game = g; // sets game
     dx = -moveSpeed;  // start off moving left
   } // constructor
 
@@ -34,36 +34,21 @@ public class Asteroid extends Entity {
                             // in other direction and down screen
     } // if
 
+ // if shot moves off left side of the screen, remove it from entity list
+    if (x < -50) {
+      game.removeEntity(this);
+    } // if
+
     // if we reach right side of screen and are moving right
     // request logic update
     if ((dx > 0) && (x > 950)) {
       game.updateLogic();
     } // if
-    
+
     // proceed with normal move
     super.move(delta);
   } // move
 
-
-  /* doLogic
-   * Updates the game logic related to the aliens,
-   * ie. move it down the screen and change direction
-   */
-  public void doLogic() {
-    // swap horizontal direction and move down screen 10 pixels
-    if(dx < 0){
-    //  game.removeEntities.add(entity)
-    }
-  } // doLogic
- 
-  public boolean tryToFire() {
-	  int randNum = (int)(Math.random() * 15); 
-	  if(randNum == 1 && (System.currentTimeMillis() - lastAlienFire) > firingIntervalAlien){
-		  lastAlienFire = System.currentTimeMillis();
-		 
-            }//if
-   	   return false;
-  }//tryToFire
   /* collidedWith
    * input: other - the entity with which the alien has collided
    * purpose: notification that the alien has collided
@@ -72,6 +57,5 @@ public class Asteroid extends Entity {
    public void collidedWith(Entity other) {
      // collisions with aliens are handled in ShotEntity and ShipEntity
    } // collidedWith
-  
-} // AlienEntity class
 
+} // AlienEntity class

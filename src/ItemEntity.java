@@ -1,9 +1,14 @@
+/* ItemEntity.java
+ * December 12, 2020
+ * Represents the items dropped
+ */
+
 public class ItemEntity extends Entity{
-	
+
 	private double moveSpeed = 75; // horizontal speed
-	private long lastAlienFire = 0;
-        int firingIntervalAlien = (int)(Math.random( ) * 500 + 400);
-	private Game game; // the game in which the alien exists
+	  private long lastAlienFire = 0;
+		int firingIntervalAlien = (int)(Math.random( ) * 500 + 400);
+	  private Game game; // the game in which the alien exists
 
 	  /* construct a new alien
 	   * input: game - the game in which the alien is being created
@@ -33,30 +38,26 @@ public class ItemEntity extends Entity{
 	    if ((dx > 0) && (x > 950)) {
 	      game.updateLogic();
 	    } // if
-	    
+
+	    // if the item moves off left side of the screen, remove it from entity list
+	    if (x < -20) {
+	      game.removeEntity(this);
+	    } // if
+
 	    // proceed with normal move
 	    super.move(delta);
 	  } // move
 
-
-	  /* doLogic
-	   * Updates the game logic related to the aliens,
-	   * ie. move it down the screen and change direction
-	   */
-	  public void doLogic() {
-	    // swap horizontal direction and move down screen 10 pixels
-	    if(dx < 0){
-	    //  game.removeEntities.add(entity)
-	    }
-	  } // doLogic
-	
 	  /* collidedWith
 	   * input: other - the entity with which the alien has collided
 	   * purpose: notification that the alien has collided
 	   *          with something
 	   */
 	   public void collidedWith(Entity other) {
-	     // collisions with aliens are handled in ShotEntity and ShipEntity
+	     // collisions with aliens are handled in ShipEntity
 	   } // collidedWith
-	  
+
+
+
+
 }//ItemEntity

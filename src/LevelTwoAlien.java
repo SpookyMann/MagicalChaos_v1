@@ -1,11 +1,12 @@
-/* AlienEntity.java
- * December 12, 2020
+/* LevelTwoAlien.java
+ * Decmeber 12, 2020
  * Represents one of the aliens
  */
 public class LevelTwoAlien extends Entity {
-	 private long lastAlienFire =  System.currentTimeMillis();;
-	  private int firingIntervalAlien = (int)(Math.random( ) * 800 + 400);
-  private double moveSpeed = 75; // horizontal speed
+  private long lastAlienFire =  System.currentTimeMillis(); // time since last fired shot
+  private int firingIntervalAlien = (int)(Math.random( ) * 800 + 400); // alien firing speed
+  private double moveSpeed = 105; // horizontal speed
+  private int lives = 2;
 
   private Game game; // the game in which the alien exists
 
@@ -18,7 +19,7 @@ public class LevelTwoAlien extends Entity {
     super(r, newX, newY);  // calls the constructor in Entity
     game = g;
     dx = -moveSpeed;  // start off moving left
-  
+
   } // constructor
 
   /* move
@@ -38,31 +39,24 @@ public class LevelTwoAlien extends Entity {
     if ((dx > 0) && (x > 950)) {
       game.updateLogic();
     } // if
-    
+
+    // if alien moves off left side of the screen, remove it from entity list
+    if (x < -50) {
+      game.removeEntity(this);
+    } // if
+
     // proceed with normal move
     super.move(delta);
   } // move
 
-
-  /* doLogic
-   * Updates the game logic related to the aliens,
-   * ie. move it down the screen and change direction
-   */
-  public void doLogic() {
-    // swap horizontal direction and move down screen 10 pixels
-    if(dx < 0){
-    //  game.removeEntities.add(entity)
-    }
-  } // doLogic
- 
   public boolean tryToFire() {
 
-	  int randNum = (int)(Math.random() * 10); 
+	  int randNum = (int)(Math.random() * 10);
 	  if(randNum == 1 && (System.currentTimeMillis() - lastAlienFire) > firingIntervalAlien){
 		  lastAlienFire = System.currentTimeMillis();
 
 		  return true;
-		 
+
             }//if
    	   return false;
   }//tryToFire
@@ -75,5 +69,5 @@ public class LevelTwoAlien extends Entity {
    public void collidedWith(Entity other) {
      // collisions with aliens are handled in ShotEntity and ShipEntity
    } // collidedWith
-  
-} // LevelTwoAlien class
+
+} // AlienEntity class
