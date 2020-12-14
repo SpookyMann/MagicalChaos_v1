@@ -226,7 +226,7 @@ public class Game extends Canvas {
             }//ifElse
             
             //if the player has killed 50 aliens, make the boss boolean true
-            if(alienScore == 10) {
+            if(alienScore == 20) {
                 isBoss = true;
             }//ifElse
         }//NotifyAlienKilled
