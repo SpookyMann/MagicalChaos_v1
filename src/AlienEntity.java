@@ -4,7 +4,7 @@
  */
 public class AlienEntity extends Entity {
 	 private long lastAlienFire =  System.currentTimeMillis();;
-	  private int firingIntervalAlien = (int)(Math.random( ) * 1000 + 900);
+	  private int firingIntervalAlien = (int)(Math.random( ) * 1100 + 1000);
   private double moveSpeed = 75; // horizontal speed
 
   private Game game; // the game in which the alien exists
