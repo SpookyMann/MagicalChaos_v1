@@ -28,6 +28,8 @@ public class Game extends Canvas {
         private boolean stopGame = false;
         private boolean changeSprite =  false;
         private boolean isDeath = false;
+	private boolean isLaser = false;
+	private boolean gameRunning = true;
         private Entity boss;
         private int chooseFire;
         private DeathEntity explosion;
@@ -42,6 +44,7 @@ public class Game extends Canvas {
         private Entity ship;  // the ship
         private Entity background;
         private Entity backgroundRepeat;
+	private DeathEntity explosion;
         public int lives = 3;
         
         private double moveSpeed = 300; // hor. vel. of ship (px/s)
@@ -160,14 +163,18 @@ public class Game extends Canvas {
          /* Notification that the player has died.
           */
          public void notifyDeath() {
-        	 if(lives > 1) { 
+        	 if(lives >= 1) { 
         		 lives--;
         		 entities.remove(ship);
         		 ship = new ShipEntity(this, ship.getX(), ship.getY());
                  entities.add(ship);
-        	 }else {
+        	 }
+		if(lives == 0){{
            message = "You FAILED!  Would you like to try again?";
-           waitingForKeyPress = true;
+          	 
+        		 waitingForKeyPress = true;
+        		 boss = null;
+        		 stopGame = false;
         	 }
          } // notifyDeath
 
@@ -176,7 +183,10 @@ public class Game extends Canvas {
           */
          public void notifyWin(){
            message = "Well done! You win!";
-           waitingForKeyPress = true;
+	
+	 waitingForKeyPress = true;
+	 boss = null;
+	 stopGame = false;
          } // notifyWin
 
         /* Notification than an alien has been killed
@@ -216,9 +226,17 @@ public class Game extends Canvas {
          	   
             }
     
-           if(alienScore == 2) {
- 				isBoss = true;
- 	   }
+           Entity alien = new DeathEntity(this, "sprites/death.png", x, y);
+                  entities.add(alien);
+                  if ((System.currentTimeMillis() - lastDeath) < deathInterval){
+                       return;
+                     } else {
+                       lastDeath = System.currentTimeMillis();
+                       entities.remove(alien);
+                     }
+             if(alienScore == 50) {
+            	 isBoss = true;
+             }
              
            
          } // notifyAlienKilled
@@ -241,19 +259,22 @@ public class Game extends Canvas {
           } // powerUp
    
 	
-	    public void chooseFire() {
-        	int choose = (int)(Math.random( ) * 2 + 1);
+ public void chooseFire() {
+        	 int choose = (int)(Math.random( ) * 2 + 1);
         	
-        	if(choose == 1) {
-        		Entity redBall = new AlienShotDefault(this, "sprites/redBall.png", boss.getX(), boss.getY());
-    			entities.add(redBall);
+        	 if(choose == 1) {
+        		 Entity redBall = new BallEntity(this, "sprites/redBall.png", boss.getX(), boss.getY());
+        		 entities.add(redBall);
+        		 isBall = true;
 
-        	}else if(choose == 2) {
-        		Entity laser = new AlienShotDefault(this, "sprites/laser.png", 0, boss.getY());
+        	 }else if(choose == 2) {
+        		laser = new LaserEntity(this, "sprites/laser.png", 0, 279);
     			entities.add(laser);
+    			isLaser = true;
     			
         	}
          }
+	
 	
 	  public void givenUsingTimer_whenSchedulingTaskOnce_thenCorrect(int two) {
         	    TimerTask task = new TimerTask() {
@@ -388,16 +409,7 @@ public class Game extends Canvas {
 
             // get graphics context for the accelerated surface and make it black
            Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-            g.setColor(new Color(0,0,0));
-            g.fillRect(0,0,1280,1024);
-            g.setColor(new Color(128,128,128));
-            g.fillRect(0,0,1280,100);
-            g.setColor(Color.white);
-            String str3 = String.valueOf(alienScore); 
-            g.drawString(str3, 50, 50);
-            g.drawString("Magical Chaos!", (1280 - g.getFontMetrics().stringWidth("Magical Chaos"))/2, 500);
-            String str4 = String.valueOf(lives); 
-            g.drawString("You have " + str4 + " lives", 750, 50);
+
             // move each entity
             if (!waitingForKeyPress) {
               for (int i = 0; i < entities.size(); i++) {
@@ -445,7 +457,7 @@ public class Game extends Canvas {
             } // for
 		  
             if(isBoss) {
-            	boss = new BossEntity(this, "sprites/tenshi.png", 1200, 200);
+            	boss = new BossEntity(this, "sprites/tenshi.png", 1280, 0);
 	          	entities.add(boss);
 	          	isBoss = false;
             }
@@ -459,6 +471,7 @@ public class Game extends Canvas {
 			
 				entities.remove(explosion);
 				removeEntities.add(explosion);
+				isDeath = false;
 
 			}
          
@@ -475,10 +488,18 @@ public class Game extends Canvas {
                  if (me.collidesWith(him)) {
                   me.collidedWith(him);
                   him.collidedWith(me);
-                  if((me instanceof AlienEntity && him instanceof ShotEntity)||(him instanceof AlienEntity && him instanceof ShotEntity)) {
-                	  DeathEntity explosion = new DeathEntity(this, "sprites/death.png", me.getX(), me.getY());
+                   if((me instanceof AlienEntity && him instanceof ShotEntity)) {
+                	  System.out.println("Explosion");
+                	  explosion = new DeathEntity(this, "sprites/death.png", me.getX(), me.getY());
                 	  entities.add(explosion);
-                	  isDeath = true;  
+                	  isDeath = true; 
+                  }
+                  if((him instanceof AlienEntity && me instanceof ShotEntity)) {
+                	  System.out.println("Explosion");
+                	  explosion = new DeathEntity(this, "sprites/death.png", him.getX(),him.getY());
+                	  entities.add(explosion);
+                	  isDeath = true; 
+                	  
                   }
                 } // if
              } // inner for
@@ -497,11 +518,14 @@ public class Game extends Canvas {
            } // if
 
            // if waiting for "any key press", draw message
-           if (waitingForKeyPress) {
-             g.setColor(Color.white);
-             g.drawString(message, (1000 - g.getFontMetrics().stringWidth(message))/2, 250);
-             g.drawString("Magical Chaos!", (1280 - g.getFontMetrics().stringWidth("Magical Chaos!"))/2, 300);
-           }  // if
+         String str3 = String.valueOf(alienScore); 
+
+	 String str4 = String.valueOf(lives); 
+	 g.setFont(new Font("TimesRoman", Font.PLAIN, 40)); 
+     	 g.setColor(Color.white);
+         g.drawString(message, (1280 - g.getFontMetrics().stringWidth(message))/2, 250);
+            
+         g.drawString("Magical Chaos! You have " + str4 + " lives left", (1280 - g.getFontMetrics().stringWidth("Project 42! You have " + str4 + " lives left"))/2, 50);
 
             // clear graphics and flip buffer
             g.dispose();
@@ -561,13 +585,13 @@ public class Game extends Canvas {
 			
 			for(int i = 0; i < entities.size(); i++) {
   				Entity entity = (Entity) entities.get(i);
-  		        if(entity instanceof BackgroundEntity) {
-  	            	   entity.setHorizontalMovement(0);
-  	            }
+				if(entity instanceof BackgroundEntity) {
+				   entity.setHorizontalMovement(0);
+				}
   			}
 			
 			boss.setHorizontalMovement(0);
-			boss.tryToFire();
+			
 			if(boss.tryToFire() == true) {
 				chooseFire();
 			}
@@ -595,13 +619,21 @@ public class Game extends Canvas {
             initEntities();
             
             // blank out any keyboard settings that might exist
-            leftPressed = false;
+               leftPressed = false;
             rightPressed = false;
             upPressed = false;
-           downPressed = false;
+            downPressed = false;
+            isBoss = false;
+            stopGame = false;
+            boss = null;
+            isDeath = false;
+            isLaser = false;
+            isBall = false;
             firePressed = false;
             alienScore = 0;
             lives = 3;
+            message = "";
+            initEntities();
 
          } // startGame
 
