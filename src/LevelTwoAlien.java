@@ -1,5 +1,5 @@
 /* AlienEntity.java
- * March 27, 2006
+ * December 12, 2020
  * Represents one of the aliens
  */
 public class LevelTwoAlien extends Entity {
@@ -76,4 +76,4 @@ public class LevelTwoAlien extends Entity {
      // collisions with aliens are handled in ShotEntity and ShipEntity
    } // collidedWith
   
-} // AlienEntity class
+} // LevelTwoAlien class
