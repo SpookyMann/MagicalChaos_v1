@@ -383,6 +383,10 @@ public class Game extends Canvas {
 		 */
 		public void gameLoop() {
 			long lastLoopTime = System.currentTimeMillis();
+			int cirnoFrame = 1;
+          		int aliceFrame = 1;
+          		int ayaFrame = 1;
+          		int tenshiFrame = 1;
 
 			// keep loop running until game ends
 			while (gameRunning) {
@@ -422,13 +426,64 @@ public class Game extends Canvas {
 			    	}//for
 			    } // if
 	
-			    // draw all entities
-			    for (int i = 0; i < entities.size(); i++) {
-			    	Entity entity = (Entity) entities.get(i);
-			    	if(entity instanceof ShipEntity)
-			    		entity.createSprite(null);
-			    	entity.draw(g);
-			    } // for
+            // draw all entities
+            for (int i = 0; i < entities.size(); i++) {
+               Entity entity = (Entity) entities.get(i);
+               // animation for ship based on movement
+               if(entity instanceof ShipEntity) {
+            	   entity.createSprite(null);
+               } // if
+               // animation for all enemy types and boss
+               if(entity.getCurrentFrame() == "sprites/cirno.png" || entity.getCurrentFrame() == "sprites/cirno" + cirnoFrame + ".png") {
+            	   if(cirnoFrame == 1) {
+            		   entity.createSprite("sprites/cirno.png");
+            	   } else {
+            		   entity.createSprite("sprites/cirno" + cirnoFrame + ".png");
+            	   } // else
+            	   if(cirnoFrame < 4) {
+            		   cirnoFrame++;
+            	   } else {
+            		   cirnoFrame = 1;
+            	   } // else
+               }
+               if(entity.getCurrentFrame() == "sprites/alice.png" || entity.getCurrentFrame() == "sprites/alice" + aliceFrame + ".png") {
+            	   if(aliceFrame == 1) {
+            		   entity.createSprite("sprites/alice.png");
+            	   } else {
+            		  entity.createSprite("sprites/alice" + aliceFrame + ".png");
+            	   } // else
+            	   if(aliceFrame < 2) {
+            		   aliceFrame++;
+            	   } else {
+            		   aliceFrame = 1;
+            	   } // else
+               }
+               if(entity instanceof LevelTwoAlien) {
+            	   if(ayaFrame == 1) {
+            		   entity.createSprite("sprites/aya.png");
+            	   } else {
+            		   entity.createSprite("sprites/aya" + ayaFrame + ".png");
+            	   } // else
+            	   if(ayaFrame < 3) {
+            		   ayaFrame++;
+            	   } else {
+            		   ayaFrame = 1;
+            	   } // else
+               }
+               if(entity instanceof BossEntity) {
+            	   if(tenshiFrame == 1) {
+            		   entity.createSprite("sprites/tenshi.png");
+            	   } else {
+            		 entity.createSprite("sprites/tenshi" + tenshiFrame + ".png");
+            	   } // else
+            	   if(tenshiFrame < 4) {
+            		   tenshiFrame++;
+            	   } else {
+            		   tenshiFrame = 1;
+            	   } // else
+               }
+               entity.draw(g);
+            } // for
 			    
 			    //if isBoss == true, draw the boss and stop the game. Then make the boss boolean false so that it doesn't keep spawning
 			    if(isBoss) {
