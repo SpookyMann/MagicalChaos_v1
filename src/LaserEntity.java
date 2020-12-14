@@ -1,4 +1,4 @@
-/* ShotEntity.java
+/* LaserEntityy.java
  * March 27, 2006
  * Represents player's ship
  */
