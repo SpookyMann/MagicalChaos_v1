@@ -546,8 +546,8 @@ public class Game extends Canvas {
 	            	for(int i = 0; i < entities.size(); i++) {
 	            		Entity entity = (Entity) entities.get(i);
 	            		if(entity instanceof AlienEntity || entity instanceof Asteroid
-	            				|| entity instanceof ShotAlien || entity instanceof AlienShotDefault || entity instanceof DeathEntity) {
-	            			entities.remove(entity);
+	            				|| entity instanceof ShotAlien || entity instanceof AlienShotDefault 
+	            				|| entity instanceof DeathEntity || entity instanceof SlasherEntity);
 	            			removeEntities.add(entity);
 	            		}//ifElse
 	            	}//for
