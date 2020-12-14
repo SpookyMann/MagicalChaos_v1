@@ -38,6 +38,12 @@
      public void createSprite(String r) {
     	  sprite = (SpriteStore.get()).getSprite(r);
      } // createSprite
+	 
+     // gets the current sprite
+     public String getCurrentFrame() {
+   	  return currentFrame;
+     } // getCurrentFrame
+     
 
      /* move
       * input: delta - the amount of time passed in ms
