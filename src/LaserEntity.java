@@ -1,6 +1,6 @@
 /* ShotEntity.java
- * March 27, 2006
- * Represents player's ship
+ *December 12 2020
+ * Creates a laser
  */
 
 //shooting class
@@ -60,4 +60,4 @@ public class LaserEntity extends Entity {
 
    } // collidedWith
 
-} // ShipEntity class
+} // LaserEntity class
