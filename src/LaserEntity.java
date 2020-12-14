@@ -8,7 +8,7 @@ public class LaserEntity extends Entity {
 
   //private double moveSpeed = 300; // horizontal speed shot moves
   private boolean used = false; // true if shot hits something
-  private Game game; // the game in which the ship exists
+  private Game game; // sets game
 
   /* construct the shot
    * input: game - the game in which the shot is being created
