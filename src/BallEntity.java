@@ -29,9 +29,9 @@ public class BallEntity extends Entity {
 	    super.move(delta);  // calls the move method in Entity
 	
 	    // if shot moves off top of screen, remove it from entity list
-	    if (x < -20) {
-	    	game.removeEntity(this);
-	    } // if
+	   if (x < -50) {
+		game.removeEntity(this);
+	   }// if
 
 	} // move
 
