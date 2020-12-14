@@ -46,7 +46,7 @@ public class ShotEntity extends Entity {
      } // if
 
      // if it has hit an alien, kill it!
-     if (other instanceof AlienEntity || other instanceof Asteroid || other instanceof LevelTwoAlien || other instanceof BossEntity) {
+     if (other instanceof AlienEntity || other instanceof Asteroid || other instanceof LevelTwoAlien ) {
     	 int x = other.getX();
     	 int y = other.getY();
 
@@ -57,7 +57,17 @@ public class ShotEntity extends Entity {
     	 // notify the game that the alien is dead
     	 game.notifyAlienKilled(x, y);
     	 used = true;
-     } // if
+     }else if(other instanceof BossEntity){
+    	 int x = other.getX();
+    	 int y = other.getY();
+
+    	 // remove affect entities from the Entity list
+    	 game.removeEntity(this);
+
+    	 // notify the game that the alien is dead
+    	 game.notifyAlienKilled(x, y);
+    	 used = true;
+     }
 
    } // collidedWith
 
