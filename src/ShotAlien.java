@@ -2,7 +2,7 @@
  * March 27, 2006
  * Represents player's ship
  */
-public class ShotEntity extends Entity {
+public class ShotAlien extends Entity {
 
   private double moveSpeed = 300; // horizontal speed shot moves
   private boolean used = false; // true if shot hits something
@@ -14,7 +14,7 @@ public class ShotEntity extends Entity {
    *              the sprite for the shot
    *        x, y - initial location of shot
    */
-  public ShotEntity(Game g, String r, int newX, int newY) {
+  public ShotAlien(Game g, String r, int newX, int newY) {
     super(r, newX, newY);  // calls the constructor in Entity
     game = g;
     dx = moveSpeed;
@@ -53,10 +53,10 @@ public class ShotEntity extends Entity {
        game.removeEntity(other);
        
        // notify the game that the alien is dead
-       game.notifyAlienKilled();
+       game.notifyAlienKilled(other.getX(), other.getY());
        used = true;
      } // if
 
    } // collidedWith
 
-} // ShotAlien class
+} // ShipEntity class
