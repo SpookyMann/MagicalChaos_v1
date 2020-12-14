@@ -58,4 +58,4 @@ public class Asteroid extends Entity {
      // collisions with aliens are handled in ShotEntity and ShipEntity
    } // collidedWith
 
-} // AlienEntity class
+} // Asteroid class
