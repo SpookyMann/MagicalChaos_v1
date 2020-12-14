@@ -255,13 +255,15 @@ public class Game extends Canvas {
          } // powerUp
    
         //selects which attack the boss will use
-         public void chooseFire() {
-        	 int choose = (int)(Math.random( ) * 2 + 1);
-        	 if(choose == 1) {
-        		 Entity redBall = new BallEntity(this, "sprites/redBall.png", boss.getX(), boss.getY());
+          public void chooseFire() {
+        	 int choose = (int)(Math.random( ) * 6 + 1);
+        	 int ballY = (int)(Math.random( ) * 900 + 1);
+        	
+        	 if(choose == 1 || choose == 3 || choose == 5) {
+        		 Entity redBall = new BallEntity(this, "sprites/redBall.png", boss.getX(), ballY);
         		 entities.add(redBall);
         		 isBall = true;
-        	 }else if(choose == 2) {
+        	 }else if(choose == 2 || choose == 4 || choose == 6) {
         		laser = new LaserEntity(this, "sprites/laser.png", 0, 279);
     			entities.add(laser);
     			isLaser = true;
